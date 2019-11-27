@@ -58,11 +58,14 @@ void wakenetTask(void *arg)
         if (detect_flag == 0) {
             int r = wakenet->detect(model_data, buffer);
             if (r) {
+                wake_up_action();
                 float ms = (chunks * audio_chunksize * 1000.0) / frequency;
                 printf("%.2f: %s DETECTED.\n", (float)ms / 1000.0, wakenet->get_word_name(model_data, r));
                 detect_flag = 1;
                 printf("-----------------LISTENING-----------------\n\n");
                 led_on(LED_GPIO);
+                rb_reset(aec_rb);
+                rb_reset(rec_rb);
             }
         } else {
             mn_chunks++;
@@ -78,6 +81,8 @@ void wakenetTask(void *arg)
                 }
                 printf("\n-----------awaits to be waken up-----------\n");
                 led_off(LED_GPIO);
+                rb_reset(aec_rb);
+                rb_reset(rec_rb);
             }
         }
         chunks++;
@@ -95,9 +100,9 @@ void app_main()
     model_iface_data_t *model_data = wakenet->create(model_coeff_getter, DET_MODE_90);
     model_data_mn = multinet->create(&MULTINET_COEFF, 6000);
 
-    xTaskCreatePinnedToCore(&recsrcTask, "rec", 2 * 1024, NULL, 8, NULL, 0);
-    xTaskCreatePinnedToCore(&agcTask, "agc", 2 * 1024, NULL, 8, NULL, 0);
-    xTaskCreatePinnedToCore(&wakenetTask, "wakenet", 2 * 1024, (void*)model_data, 5, NULL, 0);
+    xTaskCreatePinnedToCore(&recsrcTask, "rec", 2 * 1024, NULL, 8, NULL, 1);
+    xTaskCreatePinnedToCore(&agcTask, "agc", 2 * 1024, NULL, 8, NULL, 1);
+    xTaskCreatePinnedToCore(&wakenetTask, "wakenet", 2 * 1024, (void*)model_data, 5, NULL, 1);
 
     printf("-----------awaits to be waken up-----------\n");
 }

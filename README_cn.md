@@ -24,13 +24,11 @@ ESP-Skainet 的功能支持如下所示：
 
 命令词识别模型 [MultiNet](https://github.com/espressif/esp-sr/tree/master/speech_command_recognition/README_cn.md) ，致力于提供一个灵活的离线语音命词识别框架。用户可方便根据需求自定义语音命令，无需重新训练模型。  
 
-目前模型支持类似“打开空调”，“打开卧室灯”等中文命令词识别，自定义语音命令词最大个数为 100。  
-
-英文命令词定义将在下一版提供支持。 
+目前模型支持类似“打开空调”，“打开卧室灯”等中文命令词识别和"Turn on/off the light" 等英文命令词识别，自定义语音命令词最大个数为 100。   
 
 ## 声学算法
 
-目前 ESP-Skainet 集成了回声消除 AEC(Acoustic Echo Cancellation)，自动增益调节 AGC(automatic_gain_control)，噪声抑制 NS(Noise Suppression)，语音活动检测 VAD(Voice Activity Detection) 和语音定向增强 Beamforming 算法。
+目前 ESP-Skainet 集成了回声消除 AEC(Acoustic Echo Cancellation)，自动增益调节 AGC(automatic_gain_control)，噪声抑制 NS(Noise Suppression)，语音活动检测 VAD(Voice Activity Detection) 和麦克风阵列算法(Mic Array Processing)。
 
 # 快速开始
 
